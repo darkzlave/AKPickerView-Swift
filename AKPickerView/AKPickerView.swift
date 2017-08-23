@@ -226,30 +226,31 @@ private class AKPickerViewDelegateIntercepter: NSObject, UICollectionViewDelegat
 /**
 Horizontal picker view. This is just a subclass of UIView, contains a UICollectionView.
 */
+@objc
 public class AKPickerView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, AKCollectionViewLayoutDelegate {
 
 	// MARK: - Properties
 	// MARK: Readwrite Properties
 	/// Readwrite. Data source of picker view.
-	public weak var dataSource: AKPickerViewDataSource? = nil
+	@objc public weak var dataSource: AKPickerViewDataSource? = nil
 	/// Readwrite. Delegate of picker view.
-	public weak var delegate: AKPickerViewDelegate? = nil {
+	@objc public weak var delegate: AKPickerViewDelegate? = nil {
 		didSet(delegate) {
 			self.intercepter.delegate = delegate
 		}
 	}
 
 	/// Readwrite. In case of selection redirection it will simulate the scroll and then scroll back to the correct final item
-	public var simulateAnimation = false
+	@objc public var simulateAnimation = false
 
 	/// Readwrite. If enable will fire a selection notification if the current item is already selected
-	public var alwaysNotify = true
+	@objc public var alwaysNotify = true
 
 	/// Readwrite. A font which used in NOT selected cells.
-	public lazy var font = UIFont.systemFont(ofSize: 20)
+	@objc public lazy var font = UIFont.systemFont(ofSize: 20)
 
 	/// Readwrite. A font which used in selected cells.
-	public lazy var highlightedFont = UIFont.boldSystemFont(ofSize: 20)
+	@objc public lazy var highlightedFont = UIFont.boldSystemFont(ofSize: 20)
 
 	/// Readwrite. A color of the text on NOT selected cells.
 	@IBInspectable public lazy var textColor: UIColor = UIColor.darkGray
@@ -274,7 +275,7 @@ public class AKPickerView: UIView, UICollectionViewDataSource, UICollectionViewD
 		}
 	}
 	/// Readwrite. A boolean value indicates whether the mask is disabled.
-	@IBInspectable public var maskDisabled: Bool! = nil {
+	public var maskDisabled: Bool! = nil {
 		didSet {
 			self.collectionView.layer.mask = self.maskDisabled == true ? nil : {
 				let maskLayer = CAGradientLayer()
@@ -294,9 +295,9 @@ public class AKPickerView: UIView, UICollectionViewDataSource, UICollectionViewD
 
 	// MARK: Readonly Properties
 	/// Readonly. Index of currently selected item.
-	public private(set) var selectedItem: Int = 0
+	@objc public private(set) var selectedItem: Int = 0
 	/// Readonly. The point at which the origin of the content view is offset from the origin of the picker view.
-	public var contentOffset: CGPoint {
+	@objc public var contentOffset: CGPoint {
 		get {
 			return self.collectionView.contentOffset
 		}
@@ -384,8 +385,8 @@ public class AKPickerView: UIView, UICollectionViewDataSource, UICollectionViewD
 	:returns: A CGSize which contains given string just.
 	*/
 	fileprivate func sizeForString(_ string: NSString) -> CGSize {
-		let size = string.size(attributes: [NSFontAttributeName: self.font])
-		let highlightedSize = string.size(attributes: [NSFontAttributeName: self.highlightedFont])
+        let size = string.size(withAttributes: [NSAttributedStringKey.font: self.font])
+        let highlightedSize = string.size(withAttributes: [NSAttributedStringKey.font: self.highlightedFont])
 		return CGSize(
 			width: ceil(max(size.width, highlightedSize.width)),
 			height: ceil(max(size.height, highlightedSize.height)))
@@ -466,7 +467,7 @@ public class AKPickerView: UIView, UICollectionViewDataSource, UICollectionViewD
 	:param: item              An integer value which indicates the index of cell.
 	:param: animated          True if the scrolling should be animated, false if it should be immediate.
 	*/
-	public func selectItem(_ item: Int, animated: Bool = false) {
+	@objc public func selectItem(_ item: Int, animated: Bool = false) {
 		self.selectItem(item, animated: animated, notifySelection: true, simulateSelection: false)
 	}
 
